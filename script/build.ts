@@ -40,6 +40,7 @@ import { isGitHubActions } from './build-platforms'
 
 import { updateLicenseDump } from './licenses/update-license-dump'
 import { verifyInjectedSassVariables } from './validate-sass/validate-all'
+import { addLiquidGlassIcons } from './post-package-macos'
 import {
   existsSync,
   mkdirSync,
@@ -110,6 +111,10 @@ verifyInjectedSassVariables(outRoot)
   .then(() => {
     console.log('Packaging…')
     return packageApp()
+  })
+  .then(appPaths => {
+    console.log('Adding Liquid Glass icon support…')
+    return addLiquidGlassIcons().then(() => appPaths)
   })
   .catch(err => {
     console.error(err)
